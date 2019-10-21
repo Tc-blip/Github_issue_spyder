@@ -55,6 +55,7 @@ def read_json(url):
 
 if __name__=="__main__":
     url="https://api.github.com/repos/Tc-blip/ssw599/issues"
+    #https://api.github.com/repos/Tc-blip/SSW533/issues?state=closed get closed issues
     read_json(url)
     print(issue_dict)
 
