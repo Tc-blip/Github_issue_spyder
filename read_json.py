@@ -2,7 +2,9 @@ import sys
 import urllib.request
 import requests
 import json
+
 import openpyxl
+
 
 '''
 issue_dict = { key:value}  where key is issue title, value is class Repositories
@@ -40,41 +42,44 @@ class Repositories:
 
     def __str__(self):
         return f"issue_body = {self.issue_body}  issue_number = {self.issue_number} issue_title = {self.issues_title} issue_status = {self.issues_status} create_time = {self.create_time} closed_time = {self.closed_time}  label_name list = {self.label_name_list}"
-    def result_txt(self):
+
+    def result(self):
         return f"issue_body = {self.issue_body}  issue_number = {self.issue_number} issue_title = {self.issues_title} issue_status = {self.issues_status} create_time = {self.create_time} closed_time = {self.closed_time}  label_name list = {self.label_name_list}"
 
     def result_xl(self):
         return self.issue_body,self.issue_number,self.issues_title,self.issues_status,self.create_time,self.closed_time,str(self.label_name_list)
 
+def write07Excel(path,value):
+    wb = openpyxl.Workbook()
+    sheet = wb.active
+    sheet.append(value.result_xl())
+    wb.save(path)
 
 
-def get_issue_json(url):
-    r=requests.get(url)
-    return r.json()
+def open_json(path):
+    try:
+        fp = open(path,'r')
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Can't open {path}")
+    else:
+        with fp:
+            return json.load(fp)
 
-def read_json(url):
-    file = get_issue_json(url)
+def read_json(path):
+    file = open_json(path)
     for i in file:
-        issue_dict[i["title"]] = Repositories(i["number"],i["title"],i["state"],i["created_at"],i["closed_at"],i['body'])
+        issue_dict[i["title"]] = Repositories(i["number"],i["title"],i["state"],i["milestone"]["created_at"],i["milestone"]["closed_at"],i['body'])
 
         # append label name to label list
         for j in i["labels"]:
             issue_dict[i["title"]].label_name_list.append(j["name"])
 
-def write07Excel(path,value,sheet):
-
-    sheet.append(value.result_xl())
-    wb.save(path)
-
 
 if __name__=="__main__":
-    url="https://api.github.com/repos/Tc-blip/ssw533/issues"
-    #https://api.github.com/repos/Tc-blip/SSW533/issues?state=closed get closed issues
-    read_json(url)
-    print(issue_dict)
+    path="ss.json"
+    read_json(path)
 
-    wb = openpyxl.Workbook()
-    sheet = wb.active
     for i in issue_dict.values():
-        write07Excel("result.xlsx",i,sheet)
+        write07Excel("opensss.xlsx",i)
+    
     
