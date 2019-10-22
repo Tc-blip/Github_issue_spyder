@@ -75,6 +75,7 @@ if __name__=="__main__":
 
     wb = openpyxl.Workbook()
     sheet = wb.active
+    sheet.append(["issue_body","issue_number","issues_title","issues_status","create_time","closed_time","label_name_list"])
     for i in issue_dict.values():
         write07Excel("result.xlsx",i,sheet)
     
