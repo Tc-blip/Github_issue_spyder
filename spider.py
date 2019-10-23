@@ -70,7 +70,7 @@ def write07Excel(path,value,sheet):
 if __name__=="__main__":
     for i in range(40,50):
         url=f"https://api.github.com/repos/numpy/numpy/issues?page={i}&q=is%3Aissue+is%3Aopen"
-        #https://api.github.com/repos/Tc-blip/SSW533/issues?state=closed get closed issues
+        #https://github.com/numpy/numpy/issues?page={i}&q=is%3Aissue+is%3Aclosed get closed issues
         read_json(url)
     wb = openpyxl.Workbook()
     sheet = wb.active
