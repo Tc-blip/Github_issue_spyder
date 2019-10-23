@@ -85,5 +85,5 @@ if __name__=="__main__":
 
     #https://api.github.com/repos/numpy/numpy/issues?state=closed&page={i}          get closed issues
     #https://api.github.com/repos/numpy/numpy/issues?page={i}&q=is%3Aissue+is%3Aopen
-   
-    
+    #curl -i https://api.github.com/users/octocat    check out RateLimit-Remaining 
+     
