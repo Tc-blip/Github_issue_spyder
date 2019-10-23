@@ -68,13 +68,22 @@ def write07Excel(path,value,sheet):
 
 
 if __name__=="__main__":
-    for i in range(40,50):
-        url=f"https://api.github.com/repos/numpy/numpy/issues?page={i}&q=is%3Aissue+is%3Aopen"
-        #https://github.com/numpy/numpy/issues?page={i}&q=is%3Aissue+is%3Aclosed get closed issues
+    
+    start = input("input page start number: ")
+    end = input("input page end number: ")
+
+    for i in range(int(start),int(end)):
+        url=f"https://api.github.com/repos/numpy/numpy/issues?state=closed&page={i}"
         read_json(url)
+        print('processing %d out od %d items...'%(i+1,int(end)),'\r',end='')
+
     wb = openpyxl.Workbook()
     sheet = wb.active
     sheet.append(["issue_body","issue_number","issues_title","issues_status","create_time","closed_time","label_name_list"])
     for i in issue_dict.values():
-        write07Excel("result3.xlsx",i,sheet)
+        write07Excel(f"closed_{start}_{end}.xlsx",i,sheet)
+
+    #https://api.github.com/repos/numpy/numpy/issues?state=closed&page={i}          get closed issues
+    #https://api.github.com/repos/numpy/numpy/issues?page={i}&q=is%3Aissue+is%3Aopen
+   
     
